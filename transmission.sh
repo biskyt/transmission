@@ -87,6 +87,9 @@ else
                     gzip -cd >$dir/info/blocklists/bt_level1
         chown transmission. $dir/info/blocklists/bt_level1
     fi
+    # monitor port forward file
+    bash portforward_watcher.sh &
+
     exec su -l transmission -s /bin/bash -c "exec transmission-daemon \
                 --allowed \\* --blocklist --config-dir $dir/info \
                 --foreground --log-info --no-portmap \
