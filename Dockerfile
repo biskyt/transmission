@@ -1,5 +1,5 @@
 FROM alpine
-MAINTAINER David Personette <dperson@gmail.com>
+MAINTAINER @biskyt
 
 # Install transmission
 RUN apk --no-cache --no-progress upgrade && \
@@ -40,8 +40,7 @@ RUN apk --no-cache --no-progress upgrade && \
     mkdir -p /portforward && \
     touch /portforward/port.txt
 
-COPY transmission.sh /usr/bin/
-COPY healthcheck.sh /usr/bin/
+COPY transmission.sh /usr/
 COPY portforward_watcher.sh /usr/bin/
 
 ENV TRUSER=admin
@@ -51,7 +50,7 @@ ENV TZ=Europe/London
 EXPOSE 9091 51413/tcp 51413/udp
 
 HEALTHCHECK --interval=60s --timeout=15s \
-            CMD bash /usr/bin/healthcheck.sh
+            CMD curl -L 'https://api.ipify.org' || netstat -lntp | grep -q '0\.0\.0\.0:9091' || exit 1
 
 VOLUME ["/var/lib/transmission-daemon"]
 VOLUME /portforward /downloads
