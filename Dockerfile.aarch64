@@ -40,8 +40,10 @@ RUN apk --no-cache --no-progress upgrade && \
     mkdir -p /portforward && \
     touch /portforward/port.txt
 
-COPY transmission.sh /usr/
+COPY transmission.sh /usr/bin/
 COPY portforward_watcher.sh /usr/bin/
+
+RUN chmod 777 /usr/bin/transmission.sh && chmod 777 /usr/bin/portforward_watcher.sh
 
 ENV TRUSER=admin
 ENV TRPASSWD=admin
