@@ -9,13 +9,13 @@ RUN apk --no-cache --no-progress upgrade && \
     file="$dir/info/settings.json" && \
     mv /var/lib/transmission $dir && \
     usermod -d $dir transmission && \
-    [[ -d $dir/downloads ]] || mkdir -p $dir/downloads && \
-    [[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete && \
+    [[ -d /downloads ]] || mkdir -p /downloads && \
+    [[ -d /incomplete ]] || mkdir -p /incomplete && \
     [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists && \
     /bin/echo -e '{\n    "blocklist-enabled": 0,' >$file && \
     echo '    "dht-enabled": true,' >>$file && \
-    echo '    "download-dir": "'"$dir"'/downloads",' >>$file && \
-    echo '    "incomplete-dir": "'"$dir"'/incomplete",' >>$file && \
+    echo '    "download-dir": "/downloads",' >>$file && \
+    echo '    "incomplete-dir": "/incomplete",' >>$file && \
     echo '    "incomplete-dir-enabled": true,' >>$file && \
     echo '    "download-limit": 100,' >>$file && \
     echo '    "download-limit-enabled": 0,' >>$file && \
@@ -53,6 +53,6 @@ HEALTHCHECK --interval=60s --timeout=15s \
             CMD curl -L 'https://api.ipify.org' || netstat -lntp | grep -q '0\.0\.0\.0:9091' || exit 1
 
 VOLUME ["/var/lib/transmission-daemon"]
-VOLUME /portforward /downloads
+VOLUME /portforward /downloads /incomplete
 
 ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/transmission.sh"]

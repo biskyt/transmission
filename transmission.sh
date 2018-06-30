@@ -62,8 +62,8 @@ done
 
 watchdir="$(awk -F'=' '/"watch-dir"/ {print $2}' $dir/info/settings.json |
             sed 's/[,"]//g')"
-[[ -d $dir/downloads ]] || mkdir -p $dir/downloads
-[[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete
+[[ -d /downloads ]] || mkdir -p /downloads
+[[ -d /incomplete ]] || mkdir -p /incomplete
 [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
 [[ $watchdir && ! -d $watchdir ]] && mkdir -p $watchdir
 
