@@ -2,7 +2,6 @@ FROM amd64/alpine
 MAINTAINER @biskyt
 
 # Install transmission
-RUN ["cross-build-start"]
 RUN apk --no-cache --no-progress upgrade && \
     apk --no-cache --no-progress add bash curl shadow sed tini inotify-tools\
                 transmission-daemon transmission-cli && \
@@ -40,7 +39,6 @@ RUN apk --no-cache --no-progress upgrade && \
     rm -rf /tmp/* && \
     mkdir -p /portforward && \
     touch /portforward/port.txt
-RUN ["cross-build-end"]
 
 COPY transmission.sh /usr/
 COPY portforward_watcher.sh /usr/bin/
