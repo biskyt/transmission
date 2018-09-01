@@ -1,4 +1,4 @@
-FROM amd64/alpine
+FROM arm64v8/alpine
 MAINTAINER @biskyt
 
 # Install transmission
@@ -39,6 +39,7 @@ RUN apk --no-cache --no-progress upgrade && \
     rm -rf /tmp/* && \
     mkdir -p /portforward && \
     touch /portforward/port.txt
+    /bin/echo "net.core.rmem_max = 4194304" >> /etc/sysctl.d/10-rmem_max.conf
 
 COPY transmission.sh /usr/bin/
 COPY portforward_watcher.sh /usr/bin/

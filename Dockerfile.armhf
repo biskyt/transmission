@@ -1,8 +1,7 @@
-FROM resin/armhf-alpine
-MAINTAINER David Personette <dperson@gmail.com>
+FROM arm32v6/alpine
+MAINTAINER @biskyt
 
 # Install transmission
-RUN ["cross-build-start"]
 RUN apk --no-cache --no-progress upgrade && \
     apk --no-cache --no-progress add bash curl shadow sed tini inotify-tools\
                 transmission-daemon transmission-cli && \
@@ -39,17 +38,19 @@ RUN apk --no-cache --no-progress upgrade && \
     chown -Rh transmission. $dir && \
     rm -rf /tmp/* && \
     mkdir -p /portforward && \
-    touch /portforward/port.txt
-RUN ["cross-build-end"]
+    touch /portforward/port.txt && \
+    /bin/echo "net.core.rmem_max = 4194304" >> /etc/sysctl.d/10-rmem_max.conf
 
-COPY transmission.sh /usr/
+COPY transmission.sh /usr/bin/
 COPY portforward_watcher.sh /usr/bin/
+
+RUN chmod 777 /usr/bin/transmission.sh && chmod 777 /usr/bin/portforward_watcher.sh
 
 ENV TRUSER=admin
 ENV TRPASSWD=admin
 ENV TZ=Europe/London
 
-EXPOSE 9091 51413/tcp 51413/udp
+EXPOSE 9091
 
 HEALTHCHECK --interval=60s --timeout=15s \
             CMD curl -L 'https://api.ipify.org' || netstat -lntp | grep -q '0\.0\.0\.0:9091' || exit 1
