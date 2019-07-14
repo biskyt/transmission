@@ -1,4 +1,4 @@
-FROM arm32v6/alpine
+FROM arm32v7/alpine
 MAINTAINER @biskyt
 
 # Install transmission
