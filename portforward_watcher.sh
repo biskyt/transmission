@@ -2,7 +2,7 @@
 
 # Update port on first run
 sleep 10 # give transmission time to start
-PORT=`cat /portforward/port.txt`
+PORT=$(cat /portforward/port.dat)
 echo "Update port forward to: $PORT"
 transmission-remote http://localhost:9091/transmission -n $TRUSER:$TRPASSWD -p $PORT
 
